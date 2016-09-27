@@ -1,0 +1,11 @@
+{
+    "name": "vendor/solari",
+    "description": "Description of project Solari.",
+    "authors": [
+        {
+            "name": "sanvi",
+            "email": "sanvi.simo@gmail.com"
+        }
+    ],
+    "require": {}
+}

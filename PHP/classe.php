@@ -1,0 +1,90 @@
+<?php    
+  /**
+  * @author sanvi <sanvi.simo@gmail.com>
+  */
+
+/*
+ * Richiedo la classe di impostazioni 
+ */
+require_once 'settings.php';
+
+/*
+ * Creo una nuova classe che estende la precedente classe
+ */
+
+class Classe extends Settings {
+  /*
+   * Definisco una variabile pubblica che rappresenta il mio DB
+   */  
+  public $mysqli;
+
+  /*
+  Function: __construct -> costruisco una funzione per la connessione al DB
+  Purpose: Connect to the database
+  */
+  function __construct() {
+    
+    // Carica le impostazioni dalla classe genitore    
+    // Load settings from parent class
+    $settings = parent::getSettings();
+    
+    // Recupera i valori dall'array appena caricato
+    // Get the main settings from array we just loaded
+    $host = $settings['host'];
+    $user = $settings['user'];
+    $pass = $settings['pass'];
+    $database = $settings['database'];        
+          
+    // Connect to the database
+    $this->mysqli = new mysqli($host,$user,$pass,$database);
+    $this->mysqli->set_charset("utf8");
+    $this->mysqli->query("utf8");
+    if(mysqli_connect_errno())
+    {
+        die('Connection Error!');
+    }
+
+  }
+  /*
+   * Creo una funzione per lo svolgimento delle query semplici
+   * Function: query
+   * Purpose: Execute a database query
+  */
+  function query($query) {
+
+    return $this->mysqli->query($query);
+ 
+  }
+  /*
+   * Creo una funzione per recuperare valori MULTIPLI dal DB e restituirli come array
+   * Function: getDbValues
+   * Purpose: Execute a database select to found multiples values and return them as array
+  */
+  function getDbValues($query){
+      
+      $result=$this->mysqli->query($query);
+      while ($array=$result->fetch_array(MYSQLI_BOTH) ) {
+          $tmp[]= $array ;
+        }
+        
+      return $tmp;     
+  }
+  
+  /*
+    * Creo una funzione per recuperare valori SINGOLI dal DB e restituirli come array
+    * Function: getDbValue
+    * Purpose: Execute a database select to found a single row value and return it as array
+   */
+  
+  function getDbValue($query){           
+      
+      $result=$this->mysqli->query($query);
+      while ($array=$result->fetch_array(MYSQLI_NUM) ) {
+          $tmp= $array['0'] ;
+        }
+        
+      return $tmp;     
+  }
+      
+}       
+?>
